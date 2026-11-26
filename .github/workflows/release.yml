@@ -18,7 +18,7 @@ jobs:
             target: linux-x86_64
             artifact: folio-linux-x86_64
             binary: target/release/folio
-          - os: macos-14
+          - os: macos-latest
             target: macos-aarch64
             artifact: folio-macos-aarch64
             binary: target/release/folio
@@ -38,6 +38,8 @@ jobs:
             libxkbcommon-dev libwayland-dev libx11-dev libxcursor-dev \
             libxrandr-dev libxi-dev libegl1-mesa-dev libgl1-mesa-dev \
             libvulkan-dev libvulkan1 libssl-dev libasound2-dev
+      - name: Report host architecture
+        run: uname -m
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
         with:
@@ -47,8 +49,8 @@ jobs:
         if: runner.os == 'Linux'
         shell: bash
         run: |
-          highest=$(objdump -T "${{ matrix.binary }}" | grep -o 'GLIBC_[0-9.]*' | sort -V | tail -n1)
-          echo "Highest GLIBC symbol: ${highest}"
+          highest=$(objdump -T "${{ matrix.binary }}" | grep -o 'GLIBC_[0-9.]*' | sed 's/^GLIBC_//' | sort -V | tail -n1)
+          echo "Highest GLIBC symbol: GLIBC_${highest}"
           if [ "$(printf '%s\n2.35\n' "${highest}" | sort -V | tail -n1)" != "2.35" ]; then
             echo "::error::${highest} requires a newer glibc than the 2.35 baseline in this 22.04 build."
             exit 1
