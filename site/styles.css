@@ -856,6 +856,14 @@ p {
   color: var(--violet-deep);
 }
 
+.builds__note {
+  max-width: 42ch;
+  margin-top: var(--space-4);
+  color: var(--ink-soft);
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
 .footer {
   border-top: 1px solid var(--rule);
   padding-block: var(--space-7) var(--space-6);
