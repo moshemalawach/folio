@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Folio
+Comment=A local-first notebook for ideas, research, and everyday notes
+Exec=folio %F
+Icon=folio
+Terminal=false
+Type=Application
+Categories=Office;Utility;
+Keywords=notes;notebook;writing;todo;
+StartupWMClass=com.folio.notes
+Name[fr]=Folio
+Comment[fr]=Un bloc-notes local pour vos idées, vos recherches et vos notes du quotidien
+Keywords[fr]=notes;bloc-notes;écriture;tâches;cours;

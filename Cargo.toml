@@ -1,0 +1,80 @@
+[package]
+name = "folio"
+version = "0.2.0"
+edition = "2021"
+rust-version = "1.95"
+license = "MIT OR Apache-2.0"
+description = "A local-first notebook for ideas, research, and everyday notes"
+readme = "README.md"
+
+[build-dependencies]
+winresource = "0.1"
+
+[dependencies]
+eframe = { version = "0.37", default-features = false, features = [
+    "accesskit",
+    "clipboard",
+    "default_fonts",
+    "system_fonts",
+    "wayland",
+    "wgpu",
+    "x11",
+] }
+egui = "0.37"
+rusqlite = { version = "0.41", features = ["bundled", "functions"] }
+serde = { version = "1", features = ["derive", "rc"] }
+serde_json = "1"
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+rfd = "0.17"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp"] }
+uuid = { version = "1", features = ["v4"] }
+open = "5"
+thiserror = "2"
+base64 = "0.22"
+tiny-skia = "0.11.4"
+spellbook = "0.4"
+sys-locale = "0.3"
+fluent-bundle = "0.16"
+unic-langid = "0.9"
+cpal = "0.18"
+# Import of notebook packages (.onepkg), notebook folders and .one sections, in both the
+# desktop and the synced-folder formats. MPL-2.0, used unmodified (see THIRD_PARTY.md). Bump
+# to 2.1 on or after 2026-11-02: it adds pictures of document printout pages and accepts
+# Windows drive-letter paths.
+onenote_parser = { version = "=2.0.0", features = ["onepkg"] }
+# onenote_parser takes typed_path paths and does not re-export the crate (0.12.4 is too new).
+typed-path = "=0.12.3"
+# Unpacks a .onepkg when onenote_parser can't open it (import_notebook::unpack).
+cab = "=0.6.0"
+# File printouts: a pure-Rust PDF renderer (Apache-2.0 OR MIT). It embeds the PDF
+# standard-14 fonts (PDFium/Foxit, BSD-3) and Adobe's CMaps (BSD-3): see THIRD_PARTY.md.
+hayro = "=0.8.0"
+# The HTML flavour of the clipboard (rich paste from browsers and word processors). The
+# same version eframe already uses for text; Folio reads HTML only when a paste arrives.
+arboard = { version = "3.7.0", default-features = false }
+
+[dev-dependencies]
+egui_kittest = { version = "0.37", features = ["eframe", "wgpu", "snapshot"] }
+tempfile = "3"
+fluent-syntax = "0.12"
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 2
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 16
+strip = true
+
+[package.metadata.bundle]
+name = "Folio"
+identifier = "com.folio.notes"
+icon = ["assets/icon.icns", "assets/icon.png"]
+short_description = "A local-first notebook for ideas, research, and everyday notes"
+long_description = "Folio is a native, local-first notebook with notebooks, sections, freeform pages, rich note containers, ink, shapes, frises, tags, search, print/PDF, and immersive reading. Built in Rust with egui, no webview."
+category = "Productivity"
+copyright = "Copyright 2026 Folio contributors"

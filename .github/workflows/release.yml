@@ -1,0 +1,77 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: linux-x86_64
+            artifact: folio-linux-x86_64
+            binary: target/release/folio
+          - os: macos-latest
+            target: macos-aarch64
+            artifact: folio-macos-aarch64
+            binary: target/release/folio
+          - os: windows-latest
+            target: windows-x86_64
+            artifact: folio-windows-x86_64
+            binary: target/release/folio.exe
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Linux desktop dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential pkg-config \
+            libxkbcommon-dev libwayland-dev libx11-dev libxcursor-dev \
+            libxrandr-dev libxi-dev libegl1-mesa-dev libgl1-mesa-dev \
+            libvulkan-dev libvulkan1 libssl-dev libasound2-dev
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: release-${{ matrix.os }}
+      - run: cargo build --release --locked
+      - name: Package
+        shell: bash
+        run: |
+          mkdir -p dist
+          cp "${{ matrix.binary }}" dist/
+          cp README.md DESIGN.md PRODUCT.md THIRD_PARTY.md LICENSE-MIT LICENSE-APACHE dist/
+          mkdir -p dist/licenses/fonts
+          cp licenses/fonts/* dist/licenses/fonts/
+          if [ "${{ runner.os }}" = "Linux" ]; then
+            cp packaging/folio.desktop dist/
+            cp assets/icon.png dist/folio.png
+          fi
+          tar -C dist -czf "${{ matrix.artifact }}.tar.gz" .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.artifact }}.tar.gz
+          if-no-files-found: error
+
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true
