@@ -14,11 +14,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-22.04
             target: linux-x86_64
             artifact: folio-linux-x86_64
             binary: target/release/folio
-          - os: macos-latest
+          - os: macos-14
             target: macos-aarch64
             artifact: folio-macos-aarch64
             binary: target/release/folio
@@ -43,6 +43,16 @@ jobs:
         with:
           key: release-${{ matrix.os }}
       - run: cargo build --release --locked
+      - name: Check Linux glibc baseline
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          highest=$(objdump -T "${{ matrix.binary }}" | grep -o 'GLIBC_[0-9.]*' | sort -V | tail -n1)
+          echo "Highest GLIBC symbol: ${highest}"
+          if [ "$(printf '%s\n2.35\n' "${highest}" | sort -V | tail -n1)" != "2.35" ]; then
+            echo "::error::${highest} requires a newer glibc than the 2.35 baseline in this 22.04 build."
+            exit 1
+          fi
       - name: Package
         shell: bash
         run: |
@@ -71,7 +81,16 @@ jobs:
         with:
           path: artifacts
           merge-multiple: true
+      - name: Write checksums
+        run: |
+          cd artifacts
+          sha256sum *.tar.gz > SHA256SUMS
       - uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/*
-          generate_release_notes: true
+          name: Folio ${{ github.ref_name }}
+          body_path: .github/RELEASE_NOTES.md
+          files: |
+            artifacts/*
+            artifacts/SHA256SUMS
+          prerelease: false
+          make_latest: true
