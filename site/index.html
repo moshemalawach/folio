@@ -4,198 +4,216 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Folio: a notebook that stays yours</title>
-  <meta name="description" content="Folio is a local-first notebook for Linux, Windows and macOS. Native Rust, free-form pages, ink and PDF printouts. No account, no telemetry.">
-  <meta name="theme-color" content="#f6f2ea">
-  <link rel="canonical" href="https://moshemalawach.github.io/folio/">
+  <meta name="description" content="Folio is a local-first notebook for Linux, Windows and macOS. Free-form pages, ink, PDF printouts and a single SQLite file. No account, no cloud, no telemetry.">
+  <meta name="theme-color" content="#f1ebdf">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Folio: a notebook that stays yours">
   <meta property="og:description" content="A local-first notebook for Linux, Windows and macOS. No account, no cloud, no telemetry.">
   <meta property="og:url" content="https://moshemalawach.github.io/folio/">
   <meta property="og:image" content="https://moshemalawach.github.io/folio/assets/images/folio-light.png">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://moshemalawach.github.io/folio/">
   <link rel="icon" href="assets/icon.png" type="image/png">
   <link rel="stylesheet" href="styles.css">
+  <script src="site.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="masthead">
-    <div class="container masthead__inner">
+  <header class="site-header">
+    <div class="shell site-header__inner">
       <a class="brand" href="./" aria-label="Folio home">
-        <img src="assets/icon.png" alt="" width="32" height="32">
+        <img src="assets/icon.png" alt="" width="38" height="38">
         <span>Folio</span>
       </a>
       <nav class="site-nav" aria-label="Primary">
-        <a href="#features">Features</a>
-        <a class="site-nav__optional" href="#ink">Inking</a>
-        <a class="site-nav__optional" href="#import">Import</a>
-        <a href="#data">Your data</a>
-        <a class="button button--small" href="https://github.com/moshemalawach/folio/releases/latest">Download</a>
+        <a href="#page">The page</a>
+        <a href="#file">The file</a>
+        <a href="#language">Language</a>
+        <a class="nav-download" href="https://github.com/moshemalawach/folio/releases/latest">Download</a>
       </nav>
     </div>
   </header>
 
   <main id="main">
-    <section class="hero container" aria-labelledby="hero-title">
+    <section class="hero shell" aria-labelledby="hero-title">
       <div class="hero__copy">
-        <h1 id="hero-title">A notebook that stays yours.</h1>
-        <p class="lede">Native notes for Linux, Windows and macOS that never leave your computer.</p>
-        <div class="actions">
-          <a class="button" href="https://github.com/moshemalawach/folio/releases/latest">Download Folio</a>
-          <a class="text-link" href="#features">See what it does</a>
+        <h1 id="hero-title">A notebook<br>that stays <span class="marker">yours</span>.</h1>
+        <p class="hero__lede">Native notes for Linux, Windows and macOS, without accounts, cloud or telemetry.</p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="https://github.com/moshemalawach/folio/releases/latest">Download Folio</a>
+          <a class="text-link" href="https://github.com/moshemalawach/folio">Read the source</a>
         </div>
-        <p class="fineprint">Open source, MIT OR Apache-2.0. No account, no telemetry.</p>
+        <p class="hero__small">Free and open source, MIT OR Apache-2.0</p>
       </div>
-      <figure class="hero__shot">
-        <img src="assets/images/folio-light.png" width="1440" height="900" alt="Folio’s light window on the School notebook: a to-do list with one box ticked, highlighted reminders, a red ink star and a timeline of the term.">
-        <figcaption>The School sample notebook, ready on first launch.</figcaption>
-      </figure>
+
+      <div class="hero__art">
+        <div class="hero__page hero__page--back" aria-hidden="true"></div>
+        <div class="hero__page hero__page--middle" aria-hidden="true"></div>
+        <figure class="hero__screen">
+          <img class="hero__image is-active" data-theme-image="light" src="assets/images/folio-light.png" width="1440" height="900" alt="Folio's School notebook: a to-do list with one box ticked, highlighted reminders and a timeline of the term.">
+          <img class="hero__image" data-theme-image="dark" src="assets/images/folio-dark.png" width="1440" height="900" alt="Folio in dark mode: a folded outline with tags in the margin and a dated timeline.">
+          <figcaption>
+            <span>The School sample notebook, ready on first launch.</span>
+            <span class="theme-switch" role="group" aria-label="Preview theme">
+              <button type="button" class="theme-switch__button is-active" data-theme="light" aria-pressed="true">Light</button>
+              <button type="button" class="theme-switch__button" data-theme="dark" aria-pressed="false">Dark</button>
+            </span>
+          </figcaption>
+        </figure>
+        <p class="hero__note" aria-hidden="true">the whole thing, on your device</p>
+      </div>
     </section>
 
-    <section id="features" class="feature container" aria-labelledby="features-title">
-      <div class="feature__copy">
-        <h2 id="features-title">Click anywhere. Type anything.</h2>
-        <p>Pages have no fixed width. Notes sit where you put them and hold outlines nine levels deep.</p>
+    <div class="promise" aria-label="Folio's promises">
+      <div class="shell promise__inner">
+        <span>One local data folder</span>
+        <span>No account</span>
+        <span>No telemetry</span>
+        <span>English &amp; French</span>
       </div>
-      <figure class="shot">
-        <img src="assets/images/folio-outline.png" width="1440" height="900" loading="lazy" decoding="async" alt="A note in Folio with its grab bar and paragraph handle in the margin, tags beside the text and a folded outline item.">
-        <figcaption>A note container on hover, with its paragraph handle, tags and one folded outline item.</figcaption>
-      </figure>
-    </section>
+    </div>
 
-    <section id="ink" class="feature feature--reverse container" aria-labelledby="ink-title">
-      <div class="feature__copy">
-        <h2 id="ink-title">Write on the page.</h2>
-        <p>Pens, highlighters, erasers, shapes and Ink to Shape. Annotate a PDF printout, or draw a diagram beside your notes.</p>
+    <section class="workflow" id="page" aria-labelledby="workflow-title">
+      <div class="shell workflow__intro">
+        <h2 id="workflow-title">Every page has room to think.</h2>
+        <p>Start where your thought starts. Let the page grow around it.</p>
       </div>
-      <figure class="shot">
-        <img src="assets/images/folio-draw.png" width="1440" height="900" loading="lazy" decoding="async" alt="The Draw tab open over a hand-drawn right triangle and two built-up equations on small-grid paper.">
-        <figcaption>Ink, shapes and equations on one page, with the pens and tools kept close.</figcaption>
-      </figure>
-    </section>
 
-    <section id="import" class="feature container" aria-labelledby="import-title">
-      <div class="feature__copy">
-        <h2 id="import-title">Bring your notebooks over.</h2>
-        <p>Open a <code>.onepkg</code> package, a notebook folder or a single <code>.one</code> section. Folio copies it into a new notebook.</p>
-        <p>A report lists what came across and what did not.</p>
-        <dl class="facts">
-          <div>
-            <dt>Package</dt>
-            <dd><code>.onepkg</code></dd>
-          </div>
-          <div>
-            <dt>Folder</dt>
-            <dd><code>.onetoc2</code> folder</dd>
-          </div>
-          <div>
-            <dt>Section</dt>
-            <dd><code>.one</code></dd>
-          </div>
-        </dl>
-      </div>
-      <figure class="shot">
-        <img src="assets/images/folio-import.png" width="1440" height="900" loading="lazy" decoding="async" alt="A dialog reporting a notebook import: 3 sections, 4 pages, 2 pictures, 1 attached file, 2 tables and 1 ink stroke.">
-        <figcaption>The import report, over the first page of the new notebook.</figcaption>
-      </figure>
-    </section>
-
-    <section id="data" class="band" aria-labelledby="data-title">
-      <div class="container band__inner">
-        <div class="band__copy">
-          <h2 id="data-title">Your notes are a file.</h2>
-          <p>One SQLite database and one attachments folder. Copy both to back up. No account, no sync service, no telemetry.</p>
-          <pre class="file-tree" aria-label="The data folder: folio.db and attachments"><code>folio/
-  folio.db
-  attachments/</code></pre>
-          <dl class="facts facts--night">
-            <div>
-              <dt>Storage</dt>
-              <dd>SQLite</dd>
-            </div>
-            <div>
-              <dt>Backup</dt>
-              <dd>Copy the folder</dd>
-            </div>
-            <div>
-              <dt>Network</dt>
-              <dd>None</dd>
-            </div>
-          </dl>
+      <div class="shell workflow__grid">
+        <div class="workflow__steps" aria-label="What Folio does">
+          <article class="step is-active" data-step="0">
+            <p class="step__number">01</p>
+            <h3>Click anywhere.</h3>
+            <p>Notes sit where you put them and widen as you type. Outlines run nine levels deep.</p>
+          </article>
+          <article class="step" data-step="1">
+            <p class="step__number">02</p>
+            <h3>Draw with the margin.</h3>
+            <p>Pens, highlighters, shapes and Ink to Shape. Annotate a page or sketch a diagram beside it.</p>
+          </article>
+          <article class="step" data-step="2">
+            <p class="step__number">03</p>
+            <h3>Bring the worksheet in.</h3>
+            <p>A PDF page becomes a picture you can write on, and notebook files come in with a report.</p>
+          </article>
+          <article class="step" data-step="3">
+            <p class="step__number">04</p>
+            <h3>Read it back.</h3>
+            <p>Immersive Reader changes the size, focus and reading theme, and can read the page aloud.</p>
+          </article>
         </div>
-        <figure class="shot shot--night">
-          <img src="assets/images/folio-dark.png" width="1440" height="900" loading="lazy" decoding="async" alt="Folio in dark mode: a folded outline, tags in the margin and a frise of four dates from 476 to 1347.">
-          <figcaption>The same notes in the dark theme.</figcaption>
+
+        <div class="workflow__stage">
+          <div class="stage__top row">
+            <span>Folio / School</span>
+            <span class="stage__dot" aria-hidden="true"></span>
+          </div>
+          <div class="stage__media">
+            <figure class="stage__screen is-active" data-screen="0">
+              <img src="assets/images/folio-outline.png" width="1440" height="900" alt="A note container with a paragraph handle, tags and a folded outline item.">
+            </figure>
+            <figure class="stage__screen" data-screen="1">
+              <img src="assets/images/folio-draw.png" width="1440" height="900" alt="The Draw tab over a hand-drawn right triangle and two equations.">
+            </figure>
+            <figure class="stage__screen" data-screen="2">
+              <img src="assets/images/folio-printout.png" width="1440" height="900" alt="A PDF printout page with exercise and worksheet annotations.">
+            </figure>
+            <figure class="stage__screen" data-screen="3">
+              <img src="assets/images/folio-reader.png" width="1440" height="900" alt="The Immersive Reader with larger text and a three-line focus.">
+            </figure>
+          </div>
+          <p class="stage__caption" data-caption>A note container on hover, with its paragraph handle and tags.</p>
+          <div class="stage__foot">
+            <span class="stage__index" aria-hidden="true">01 / 04</span>
+            <span class="stage__hint">Scroll to see the page change</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="file" id="file" aria-labelledby="file-title">
+      <div class="shell file__inner">
+        <div class="file__copy">
+          <h2 id="file-title">Your notes are not a service.</h2>
+          <p>One SQLite database and one attachments folder. Copy it, back it up, keep it, without an account, a sync service or telemetry.</p>
+          <a class="text-link text-link--light" href="https://github.com/moshemalawach/folio#where-your-notes-live">Where your notes live</a>
+        </div>
+        <div class="file__visual">
+          <div class="file__" aria-label="The folio data folder contains folio.db and an attachments folder">
+            <div class="file__head">
+              <span class="file__name">folio</span>
+              <span class="file__label">local</span>
+            </div>
+            <div class="file__row">
+              <span>folio.db</span>
+              <span>SQLite</span>
+            </div>
+            <div class="file__row">
+              <span>attachments/</span>
+              <span>pictures, files, printouts</span>
+            </div>
+          </div>
+          <p class="file__caption">The whole notebook. No server to be down.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="language section" id="language" aria-labelledby="language-title">
+      <div class="shell language__grid">
+        <div class="language__copy">
+          <h2 id="language-title">Two languages. One notebook.</h2>
+          <p>Folio writes in English and French, with dates, numbers and shortcuts: the way each language names them. The sample notebooks are written for the language.</p>
+          <p class="language__note">Translations are built in, and a restart is not needed.</p>
+        </div>
+        <figure class="language__shot">
+          <img src="assets/images/folio-fr.png" width="1440" height="900" alt="Folio in French: the School notebook, with the ribbon and a sample page in French.">
+          <figcaption>Français</figcaption>
         </figure>
       </div>
     </section>
 
-    <section class="feature feature--reverse container" aria-labelledby="reader-title">
-      <div class="feature__copy">
-        <h2 id="reader-title">Read it back.</h2>
-        <p>The Immersive Reader changes text size, line focus and reading theme, and can read the page aloud in the system’s voice.</p>
-        <p>Print a page through your browser, or export a page, section or whole notebook as web pages with its pictures and files.</p>
+    <section class="download" id="download" aria-labelledby="download-title">
+      <div class="shell download__inner">
+        <div class="download__copy">
+          <h2 id="download-title">Put it on your desk.</h2>
+          <p>Builds for Linux, Windows and macOS, or compile it from source with Rust 1.95.</p>
+          <div class="download__actions">
+            <a class="button button--dark" href="https://github.com/moshemalawach/folio/releases/latest">Download the latest release</a>
+            <a class="text-link" href="https://github.com/moshemalawach/folio#build-and-run">Build from source</a>
+          </div>
+        </div>
+        <table class="builds">
+          <caption>Builds</caption>
+          <thead>
+            <tr><th scope="col">Platform</th><th scope="col">Status</th><th scope="col">Get it</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Linux x86_64</td><td>Tested</td><td><a href="https://github.com/moshemalawach/folio/releases/latest">Release</a></td></tr>
+            <tr><td>Windows x86_64</td><td>CI build</td><td><a href="https://github.com/moshemalawach/folio/releases/latest">Release</a></td></tr>
+            <tr><td>macOS aarch64</td><td>CI build</td><td><a href="https://github.com/moshemalawach/folio/releases/latest">Release</a></td></tr>
+          </tbody>
+        </table>
       </div>
-      <figure class="shot">
-        <img src="assets/images/folio-reader.png" width="1440" height="900" loading="lazy" decoding="async" alt="The Immersive Reader showing the Figures of speech page in the Paper theme with a three-line focus and reading controls.">
-        <figcaption>Immersive Reader: larger text, a three-line focus and the system’s voice.</figcaption>
-      </figure>
-    </section>
-
-    <section class="download container" aria-labelledby="download-title">
-      <h2 id="download-title">Take it to your desk.</h2>
-      <p class="lede">Builds for Linux, Windows and macOS, or compile with Rust 1.95.</p>
-      <div class="actions actions--centre">
-        <a class="button" href="https://github.com/moshemalawach/folio/releases/latest">Download Folio</a>
-        <a class="text-link" href="https://github.com/moshemalawach/folio#build-and-run">Build from source</a>
-      </div>
-      <table class="platforms">
-        <caption>Builds</caption>
-        <thead>
-          <tr>
-            <th scope="col">Platform</th>
-            <th scope="col">Status</th>
-            <th scope="col">Get it</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Linux x86_64</td>
-            <td>Tested</td>
-            <td><a href="https://github.com/moshemalawach/folio/releases/latest">Release</a></td>
-          </tr>
-          <tr>
-            <td>Windows x86_64</td>
-            <td>CI build</td>
-            <td><a href="https://github.com/moshemalawach/folio/releases/latest">Release</a></td>
-          </tr>
-          <tr>
-            <td>macOS aarch64</td>
-            <td>CI build</td>
-            <td><a href="https://github.com/moshemalawach/folio/releases/latest">Release</a></td>
-          </tr>
-        </tbody>
-      </table>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="container footer__inner">
+    <div class="shell footer__inner">
       <div class="footer__brand">
         <a class="brand" href="./" aria-label="Folio home">
-          <img src="assets/icon.png" alt="" width="28" height="28">
+          <img src="assets/icon.png" alt="" width="30" height="30">
           <span>Folio</span>
         </a>
-        <p>A local-first notebook.</p>
+        <p>A local-first notebook for ideas, research and everyday notes.</p>
       </div>
-      <nav class="footer__links" aria-label="Project">
+      <nav class="footer__nav" aria-label="Project">
         <a href="https://github.com/moshemalawach/folio">GitHub</a>
         <a href="https://github.com/moshemalawach/folio#readme">Read me</a>
         <a href="https://github.com/moshemalawach/folio/issues">Issues</a>
       </nav>
       <div class="footer__legal">
-        <a href="https://github.com/moshemalawach/folio/blob/main/LICENSE-MIT">MIT</a>
-        <a href="https://github.com/moshemalawach/folio/blob/main/LICENSE-APACHE">Apache-2.0</a>
+        <span>MIT OR Apache-2.0</span>
         <a href="licenses.html">Licences</a>
       </div>
     </div>
