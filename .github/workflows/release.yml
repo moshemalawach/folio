@@ -15,16 +15,16 @@ jobs:
       matrix:
         include:
           - os: ubuntu-22.04
-            target: linux-x86_64
             artifact: folio-linux-x86_64
+            package: folio-linux-x86_64.tar.gz
             binary: target/release/folio
           - os: macos-latest
-            target: macos-aarch64
             artifact: folio-macos-aarch64
+            package: folio-macos-aarch64.dmg
             binary: target/release/folio
           - os: windows-latest
-            target: windows-x86_64
             artifact: folio-windows-x86_64
+            package: folio-windows-x86_64.zip
             binary: target/release/folio.exe
     runs-on: ${{ matrix.os }}
     steps:
@@ -52,26 +52,44 @@ jobs:
           highest=$(objdump -T "${{ matrix.binary }}" | grep -o 'GLIBC_[0-9.]*' | sed 's/^GLIBC_//' | sort -V | tail -n1)
           echo "Highest GLIBC symbol: GLIBC_${highest}"
           if [ "$(printf '%s\n2.35\n' "${highest}" | sort -V | tail -n1)" != "2.35" ]; then
-            echo "::error::${highest} requires a newer glibc than the 2.35 baseline in this 22.04 build."
+            echo "::error::GLIBC_${highest} is newer than the 2.35 baseline in this 22.04 build."
             exit 1
           fi
-      - name: Package
+      - name: Package Linux
+        if: runner.os == 'Linux'
         shell: bash
         run: |
           mkdir -p dist
           cp "${{ matrix.binary }}" dist/
           cp README.md DESIGN.md PRODUCT.md THIRD_PARTY.md LICENSE-MIT LICENSE-APACHE dist/
-          mkdir -p dist/licenses/fonts
-          cp licenses/fonts/* dist/licenses/fonts/
-          if [ "${{ runner.os }}" = "Linux" ]; then
-            cp packaging/folio.desktop dist/
-            cp assets/icon.png dist/folio.png
-          fi
-          tar -C dist -czf "${{ matrix.artifact }}.tar.gz" .
+          cp -R licenses dist/
+          cp packaging/folio.desktop dist/
+          cp assets/icon.png dist/folio.png
+          tar -C dist -czf "${{ matrix.package }}" .
+      - name: Package macOS
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          cargo install cargo-bundle --locked
+          cargo bundle --release
+          mkdir -p dist
+          cp -R "target/release/bundle/osx/Folio.app" dist/
+          cp README.md DESIGN.md PRODUCT.md THIRD_PARTY.md LICENSE-MIT LICENSE-APACHE dist/
+          cp -R licenses dist/
+          hdiutil create -volname "Folio" -srcfolder dist -ov -format UDZO "${{ matrix.package }}"
+      - name: Package Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Copy-Item "${{ matrix.binary }}" dist/
+          Copy-Item README.md, DESIGN.md, PRODUCT.md, THIRD_PARTY.md, LICENSE-MIT, LICENSE-APACHE dist/
+          Copy-Item -Recurse licenses dist/licenses
+          Compress-Archive -Path "dist/*" -DestinationPath "${{ matrix.package }}" -Force
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
-          path: ${{ matrix.artifact }}.tar.gz
+          path: ${{ matrix.package }}
           if-no-files-found: error
 
   publish:
@@ -86,7 +104,7 @@ jobs:
       - name: Write checksums
         run: |
           cd artifacts
-          sha256sum *.tar.gz > SHA256SUMS
+          sha256sum folio-* > SHA256SUMS
       - uses: softprops/action-gh-release@v2
         with:
           name: Folio ${{ github.ref_name }}
